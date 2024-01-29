@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="Examen.Views.ProductosView.ProductosReporteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewProductos="clr-namespace:Examen.ViewModels.ProductosViewModels"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:sti="clr-namespace:Stimulsoft.Report.Viewer;assembly=Stimulsoft.Report.Win"
+             xmlns:local="clr-namespace:Examen.Views.ProductosView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    
+    
+    
+    <UserControl.DataContext>
+        <viewProductos:ProductosReporteViewModel />
+    </UserControl.DataContext>
+
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Border CornerRadius="10"
+            BorderThickness="5">
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0"/>
+                <RowDefinition/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="1" CornerRadius="10" Padding="10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="{StaticResource winBorderColor7}" Offset="0"/>
+                        <GradientStop Color="{StaticResource winBorderColor8}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="150"/>
+                        <RowDefinition Height="120"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="90"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Primer DataGrid para mostrar los datos de la venta -->
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding ReporteDataTable.DefaultView}" Background="Transparent" BorderThickness="0" AutoGenerateColumns="False" Margin="0,10,0,130" Grid.RowSpan="2">
+
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#BCBEE0"/>
+                                <Setter Property="Padding" Value="10,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="#3d1635"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13" />
+                            <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="Precio" Binding="{Binding Prrecio,  StringFormat={}{0:C2},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                    <!-- Segundo StackPanel para los input -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,10">
+                        <Label Content="Fecha Inicio:" VerticalAlignment="Center" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                        <DatePicker SelectedDate="{Binding FechaInicio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,10,5,78" Width="116"/>
+                        <Label Content="Fecha Fin:" VerticalAlignment="Center" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13" Margin="10,0,0,0"/>
+                        <DatePicker SelectedDate="{Binding FechaFin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,5,78" Width="116"/>
+                    </StackPanel>
+
+                    <!-- tercer StackPanel para los mensjaes -->
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,10">
+
+                        <TextBlock Grid.Row="1" Text="{Binding ErrorMessageFechaFin}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>
+
+                        <TextBlock Grid.Row="1" Text="{Binding ErrorMessageFechaInicio}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>
+
+
+                    </StackPanel>
+
+
+                    <!-- cuarto StackPanel para los botones -->
+                    <StackPanel Grid.Row="3"  Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,10">
+
+                        <Button x:Name="btnGenerarReporte"
+                                Command="{Binding GenerarReporteDetalladoCommand}"
+                                Content="Generar Reporte" 
+                                Foreground="#E8B2EB"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontFamily="Monserrat"
+                                Cursor="Hand"
+                                Grid.Column="2"
+                                Margin="20,20,0,0">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#a11f3f"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#0052af"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="150" Height="40"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+
+                        </Button>
+
+                        <Button x:Name="btnCancelar"
+                                Command="{Binding CancelCommand}"
+                                Content="Cancelar" 
+                                Foreground="#E8B2EB"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontFamily="Monserrat"
+                                Cursor="Hand"
+                                Grid.Column="2"
+                                Margin="20,20,0,0">
+
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#a11f3f"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#0052af"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="150" Height="40"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+
+        </Grid>
+    </Border>
+
+</UserControl>

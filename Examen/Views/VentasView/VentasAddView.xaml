@@ -1,0 +1,224 @@
+﻿<UserControl x:Class="Examen.Views.VentasView.VentasAddView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewVentas ="clr-namespace:Examen.ViewModels.VentasViewModels"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" 
+             xmlns:local="clr-namespace:Examen.Views.VentasView"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800">
+
+
+
+
+    <UserControl.DataContext>
+        <viewVentas:VentasAddViewModel />
+    </UserControl.DataContext>
+
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Border CornerRadius="10"
+            BorderThickness="5">
+        <Grid>
+            
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>                
+               
+            </Grid>
+            <Border Grid.Row="1"                
+                    CornerRadius="10" 
+                    Padding="10" Margin="-10,0,10,0">
+
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="{StaticResource winBorderColor7}" Offset="0"/>
+                        <GradientStop Color="{StaticResource winBorderColor8}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                        <RowDefinition Height="330"/>
+                    </Grid.RowDefinitions>
+
+
+                    <!-- Primer DataGrid para mostrar los datos de  la venta -->
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding VentasLista}" Background="Transparent" BorderThickness="0" AutoGenerateColumns="False">
+
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#BCBEE0"/>
+                                <Setter Property="Padding" Value="10,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="#3d1635"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:dd/MM/yyyy}}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13" />
+                            <DataGridTextColumn Header="Total" Binding="{Binding Total,StringFormat={}{0:C2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="ID Cliente" Binding="{Binding IDCliente, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                    <!-- Segundo StackPanel para los nuevos campos -->
+                    <StackPanel Grid.Row="2" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" Margin="0,0,0,30">
+                        <!-- Primera fila: Propiedades 1 y 2 -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0,0,0,10">
+                            <!-- Propiedad 1: Fecha -->
+                            <StackPanel Margin="50,15,0,0" Width="250">
+                                <TextBlock Text="Seleccione una fecha de venta:" Foreground="AntiqueWhite" FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,15" />
+                                <DatePicker SelectedDate="{Binding VentasNewDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Background="{Binding Background, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        BorderBrush="{Binding Background, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        FontSize="13"
+                                        FontWeight="Medium"
+                                        FontFamily="Monserrat"
+                                        Foreground="{StaticResource color5}"
+                                        Height="15"
+                                        VerticalAlignment="Center"
+                                        BorderThickness="0,0,0,1"
+                                        Padding="0,0,0,0"/>
+                                <TextBlock Text="{Binding ErrorMessageFecha}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10" TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <!-- Propiedad 2: Dd Venta -->
+                            <StackPanel Margin="100,15,0,0" Width="150">
+                                <TextBlock Text="Ingre el ID Venta:" Foreground="AntiqueWhite"  FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,15" />
+                                <TextBox x:Name="txtNuevoIdVenta" Text="{Binding VentasNewIdVenta, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                FontSize="13"
+                                FontWeight="Medium"
+                                FontFamily="Monserrat"
+                                Foreground="{StaticResource color5}"
+                                Background="Transparent"
+                                Height="15"
+                                VerticalAlignment="Center"
+                                BorderThickness="0,0,0,1"
+                                Padding="20,0,0,0"
+                                BorderBrush="Red" />
+                                <TextBlock Text="{Binding ErrorMessageIDVenta}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Segunda fila: Propiedades 3 -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                            <!-- Propiedad 3: ID Cliente -->
+                            <StackPanel Margin="0,30,20,0" Width="150">
+                                <TextBlock Text="Nuevo ID Cliente:" Foreground="AntiqueWhite" FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,15" />
+                                <TextBox x:Name="txtNuevoidClienteVenta" Text="{Binding VentasNewIdCliente, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Monserrat"
+                                    Foreground="{StaticResource color5}"
+                                    Background="Transparent"
+                                    Height="15"
+                                    VerticalAlignment="Center"
+                                    BorderThickness="0,0,0,1"
+                                    Padding="20,0,0,0"
+                                    BorderBrush="Red" />
+                                <TextBlock Text="{Binding ErrorMessageIDCliente}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!--  StackPanel para los mensjaes -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0,10,10">
+
+                            <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>
+
+                            <TextBlock Grid.Row="1" Text="{Binding SuccessMessage}" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>                           
+
+                        </StackPanel>
+
+                        <!-- Cuarta fila: Botones -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+                            <Button x:Name="btnAceptar"
+                                Command="{Binding AddVentasCommand}"
+                                Content="Aceptar"
+                                Foreground="#E8B2EB"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontFamily="Monserrat"
+                                Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#a11f3f" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#0052af" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="80" Height="40"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button x:Name="btnCancelar"
+                            Command="{Binding CancelCommand}"
+                            Content="Cancelar"
+                            Foreground="#E8B2EB"
+                            BorderThickness="0"
+                            FontSize="14"
+                            FontFamily="Monserrat"
+                            Cursor="Hand"
+                            Margin="20,0,0,0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#a11f3f" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#0052af" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="80" Height="40"
+                                        CornerRadius="20"
+                                        Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Border>
+</UserControl>

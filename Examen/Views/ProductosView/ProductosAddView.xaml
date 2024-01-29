@@ -1,0 +1,288 @@
+﻿<UserControl x:Class="Examen.Views.ProductosView.ProductosAddView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Examen.Views.ProductosView"
+             xmlns:viewModel="clr-namespace:Examen.ViewModels"
+             xmlns:viewProductos="clr-namespace:Examen.ViewModels.ProductosViewModels"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="Transparent">
+
+    <UserControl.DataContext>
+        <viewProductos:ProductosAddViewModel/>
+    </UserControl.DataContext>
+    
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+
+
+    <Border CornerRadius="10"
+            BorderThickness="5">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="120"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Top"
+                            Grid.Column="0">
+                    <fa:IconImage Icon="Search" Height="20" Width="20" Foreground="{StaticResource plainTextColor3}"/>
+                    <TextBox x:Name="txtSearch"                         
+                             FontSize="13"
+                             Height="24"
+                             Width="300"
+                             Background="Transparent"
+                             FontWeight="Medium"
+                             FontFamily="Montserrat"                            
+                             Foreground="{StaticResource plainTextColor3}"
+                             CaretBrush="{StaticResource plainTextColor3}"
+                             BorderBrush="{StaticResource plainTextColor3}"
+                             BorderThickness="0,0,0,1"                             
+                             VerticalContentAlignment="Center"
+                             Margin="5,5,0,0">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Setter Property="Text" Value="Ingrese el ID..."/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsFocused" Value="True">
+                                        <Setter Property="Text" Value="{Binding ProductoIdSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </StackPanel>
+                <Button Grid.Column="1"
+                                Command="{Binding SearchCommand, UpdateSourceTrigger=PropertyChanged}"                            
+                                Content="Buscar"                            
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                BorderThickness="0"
+                                Foreground="White"
+                                VerticalAlignment="Top">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#773DFF"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Height="30"
+                                                        CornerRadius="15"
+                                                        Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#836EFB"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+            <Border Grid.Row="1" CornerRadius="10" Padding="10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="{StaticResource winBorderColor7}" Offset="0"/>
+                        <GradientStop Color="{StaticResource winBorderColor8}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Primer DataGrid para mostrar los datos del producto -->
+                    <DataGrid Grid.Row="0" ItemsSource="{Binding ProductoLista}" Background="Transparent" BorderThickness="0" AutoGenerateColumns="False">
+
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="#BCBEE0"/>
+                                <Setter Property="Padding" Value="10,0,0,10"/>
+                                <Setter Property="FontFamily" Value="Montserrat"/>
+                                <Setter Property="FontSize" Value="15"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="#3d1635"/>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13" />
+                            <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                            <DataGridTextColumn Header="Precio" Binding="{Binding Precio, StringFormat={}{0:C2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="*" Foreground="#BCBEE0" FontFamily="Montserrat" FontSize="13"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+
+                    <!-- Primer StackPanel para los mensjaes de error -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+
+                        <TextBlock Grid.Row="1" Text="{Binding ErrorMessage}" Foreground="Red" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>                        
+                    </StackPanel>
+
+                    <!-- Segundo StackPanel para los nuevos campos -->
+                    <StackPanel Grid.Row="2" VerticalAlignment="Center"
+                                HorizontalAlignment="Center" Margin="0,0,0,30">
+                        <!-- Primera fila: Propiedades 1 y 2 -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"  Margin="0,0,0,10">
+                            <!-- Propiedad 1: Nombre -->
+                            <StackPanel Margin="0,0,20,0" Width="150">
+                                <TextBlock Text="Nombre Producto:" Foreground="AntiqueWhite" FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,5" />
+                                <TextBox x:Name="txtNNombreProducto" Text="{Binding NewProductoNombre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Monserrat"
+                                    Foreground="{StaticResource color5}"
+                                    Background="Transparent"
+                                    Height="15"
+                                    VerticalAlignment="Center"
+                                    BorderThickness="0,0,0,1"
+                                    Padding="20,0,0,0"
+                                    BorderBrush="Red" />
+                                <TextBlock Text="{Binding ErrorMessageNombre}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10" TextWrapping="Wrap" />
+                            </StackPanel>
+
+                            <!-- Propiedad 2: Categoria -->
+                            <StackPanel Margin="100,0,0,0" Width="150">
+                                <TextBlock Text="Categoria:" Foreground="AntiqueWhite"  FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,5" />
+                                <TextBox x:Name="txtCategoriaProducto" Text="{Binding NewProductoCategoria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                FontSize="13"
+                                FontWeight="Medium"
+                                FontFamily="Monserrat"
+                                Foreground="{StaticResource color5}"
+                                Background="Transparent"
+                                Height="15"
+                                VerticalAlignment="Center"
+                                BorderThickness="0,0,0,1"
+                                Padding="20,0,0,0"
+                                BorderBrush="Red" />
+                                <TextBlock Text="{Binding ErrorMessageCategoria}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10"  TextWrapping="Wrap" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!-- Segunda fila: Propiedades 3 -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                            <!-- Propiedad 3: Precio -->
+                            <StackPanel Margin="0,0,20,0" Width="150">
+                                <TextBlock Text="Nuevo Precio:" Foreground="AntiqueWhite" FontSize="13" FontWeight="Medium" FontFamily="Monserrat" Margin="0,0,0,5" />
+                                <TextBox x:Name="txtPrecioProducto" Text="{Binding NewProductoPrecio, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Monserrat"
+                                    Foreground="{StaticResource color5}"
+                                    Background="Transparent"
+                                    Height="15"
+                                    VerticalAlignment="Center"
+                                    BorderThickness="0,0,0,1"
+                                    Padding="20,0,0,0"
+                                    BorderBrush="Red" />
+                                <TextBlock Text="{Binding ErrorMessagePrecio}" Foreground="Red" Margin="0,5,0,0" FontWeight="Medium" FontSize="10" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </StackPanel>
+                        
+                        <!-- Segundo StackPanel para los mensjaes de Exito -->
+                        <StackPanel>
+                            <TextBlock Grid.Row="1" Text="{Binding SuccessMessage}" Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Montserrat" FontSize="13"/>
+                        </StackPanel>
+
+                        <!-- Cuarta fila: Botones -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,02,0,0">
+                            <Button x:Name="btnAceptar"
+                                Command="{Binding AddProductoCommand}"
+                                Content="Aceptar"
+                                Foreground="#E8B2EB"
+                                BorderThickness="0"
+                                FontSize="14"
+                                FontFamily="Monserrat"
+                                Cursor="Hand">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#a11f3f" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#0052af" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="80" Height="40"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                            <Button x:Name="btnCancelar"
+                            Command="{Binding CancelCommand}"
+                            Content="Cancelar"
+                            Foreground="#E8B2EB"
+                            BorderThickness="0"
+                            FontSize="14"
+                            FontFamily="Monserrat"
+                            Cursor="Hand"
+                            Margin="20,0,0,0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#a11f3f" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#0052af" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="80" Height="40"
+                                        CornerRadius="20"
+                                        Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                      HorizontalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>
